@@ -15,18 +15,37 @@ use Symfony\Component\Stopwatch\Stopwatch;
 class StopwatchMiddleware
 {
     /**
-     * @var Stopwatch
+     * @var Stopwatch The stopwatch service.
      */
     protected $stopwatch;
 
     /**
+     * @var string The name of the header where the request duration is stored.
+     */
+    protected $headerName = 'X-Duration';
+
+    /**
      * Creates a callable Middleware for timing guzzle requests.
      *
-     * @param Stopwatch $stopwatch
+     * @param Stopwatch $stopwatch The stopwatch service.
      */
     public function __construct(Stopwatch $stopwatch = null)
     {
         $this->stopwatch = $stopwatch;
+    }
+
+    /**
+     * Sets the name of the header where the request duration is stored.
+     *
+     * @param string $headerName The name of the header where the request duration is stored.
+     *
+     * @return StopwatchMiddleware
+     */
+    public function setHeaderName($headerName)
+    {
+        $this->headerName = $headerName;
+
+        return $this;
     }
 
     /**
@@ -53,7 +72,8 @@ class StopwatchMiddleware
 
             if (null !== $this->stopwatch) {
                 $event = $this->stopwatch->stop((string)$request->getUri());
-                return $response->withHeader('X-Duration', $event->getDuration());
+
+                return $response->withHeader($this->headerName, $event->getDuration());
             }
 
             return $response;

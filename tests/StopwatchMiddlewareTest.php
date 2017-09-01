@@ -48,7 +48,9 @@ class StopwatchMiddlewareTest extends \PHPUnit_Framework_TestCase
         $stopwatch->shouldReceive('stop')->once()->with('http://example.com')->andReturn($event);
 
         // Middleware
+        $headerName = 'X-Duration';
         $middleware = new StopwatchMiddleware($stopwatch);
+        $middleware->setHeaderName($headerName);
         $stack->push($middleware);
 
         $handler = $stack->resolve();
@@ -58,7 +60,7 @@ class StopwatchMiddlewareTest extends \PHPUnit_Framework_TestCase
         $promise = $handler($request, []);
         $response = $promise->wait();
 
-        $this->assertEquals($response->getHeaderLine('X-Duration'), $duration);
+        $this->assertEquals($response->getHeaderLine($headerName), $duration);
     }
 
     /**
