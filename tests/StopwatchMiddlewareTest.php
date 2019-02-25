@@ -45,6 +45,7 @@ class StopwatchMiddlewareTest extends \PHPUnit_Framework_TestCase
         $event->shouldReceive('getDuration')->once()->andReturn($duration);
         $stopwatch = m::mock(Stopwatch::class);
         $stopwatch->shouldReceive('start')->once()->with('http://example.com');
+        $stopwatch->shouldReceive('isStarted')->andReturn(true);
         $stopwatch->shouldReceive('stop')->once()->with('http://example.com')->andReturn($event);
 
         // Middleware
@@ -86,5 +87,35 @@ class StopwatchMiddlewareTest extends \PHPUnit_Framework_TestCase
         $response = $promise->wait();
 
         $this->assertNotEquals($response->getHeaderLine('X-Duration'), $duration);
+    }
+
+    /**
+     * @dataProvider expectProvider
+     */
+    public function testStopwatchNotStarted($duration)
+    {
+        $stopwatch = m::mock(Stopwatch::class);
+        $stopwatch->shouldReceive('start')->never();
+        $stopwatch->shouldReceive('isStarted')->once()->andReturn(false);
+        $stopwatch->shouldReceive('stop')->never();
+
+        // HandlerStack
+        $response = new Response(200);
+        $stack = new HandlerStack(new MockHandler([$response]));
+
+        // Middleware
+        $headerName = 'X-Duration';
+        $middleware = new StopwatchMiddleware($stopwatch);
+        $middleware->setHeaderName($headerName);
+
+        $stack->push($middleware);
+
+        $handler = $stack->resolve();
+
+        // Request
+        $request = new Request('GET', 'http://example.com');
+        $promise = $handler($request, []);
+        $response = $promise->wait();
+        $this->assertInstanceOf(Response::class, $response);
     }
 }

@@ -70,7 +70,7 @@ class StopwatchMiddleware
     {
         return function (ResponseInterface $response) use ($request) {
 
-            if (null !== $this->stopwatch) {
+            if (null !== $this->stopwatch && $this->stopwatch->isStarted((string)$request->getUri())) {
                 $event = $this->stopwatch->stop((string)$request->getUri());
 
                 return $response->withHeader($this->headerName, $event->getDuration());
