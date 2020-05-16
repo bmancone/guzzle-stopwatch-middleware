@@ -14,10 +14,9 @@ use \Mockery as m;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 
-/**
- * @author Brice Mancone <brice.mancone@gmail.com>
- */
-class StopwatchMiddlewareTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class StopwatchMiddlewareTest extends TestCase
 {
     /**
      * @return array Durations.

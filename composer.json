@@ -7,18 +7,18 @@
   "authors": [
     {
       "name":     "Brice Mancone",
-      "email":    "brice.mancone@gmail.com",
+      "email":    "brice@mancone.fr",
       "homepage": "https://github.com/bmancone"
     }
   ],
   "require": {
-    "php" : ">=5.5",
-    "symfony/stopwatch": "^2.3|^3|^4",
+    "php" : ">=7.2",
+    "symfony/stopwatch": "^3.4|^4.0|^5.0",
     "guzzlehttp/guzzle": "^6.0"
   },
   "require-dev": {
-    "phpunit/phpunit" : "~4.6",
-    "mockery/mockery": "~0.9"
+    "phpunit/phpunit" : "^8.0",
+    "mockery/mockery": "^1.3"
   },
   "autoload": {
     "psr-4": {
