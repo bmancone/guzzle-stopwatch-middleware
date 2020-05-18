@@ -9,8 +9,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
  * Stopwatch Middleware for Guzzle.
- *
- * @author Brice Mancone <brice.mancone@gmail.com>
  */
 class StopwatchMiddleware
 {
