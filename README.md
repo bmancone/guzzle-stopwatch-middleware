@@ -45,8 +45,8 @@ $response = $client->send($request);
 printf('Request to [%s] took [%dms]', (string)$request->getUri(), $response->getHeaderLine('X-Duration'));
 ```
 
-## Symfony2 Profiler
+## Symfony Profiler
 
-If you are using Symfony2, simply inject `debug.stopwatch`, this will add events to the profiler timeline.
+If you are using Symfony, simply inject `debug.stopwatch` (or use autowiring), this will add events to the profiler timeline.
   
   
